@@ -33,6 +33,22 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""a1cb6906-4cce-4001-899d-d9def8bad864"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""SpawnNewBall"",
+                    ""type"": ""Button"",
+                    ""id"": ""571c7c1b-05d0-4b1b-9f73-ebad7a93bcdc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -48,9 +64,9 @@ public class @Input : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Horizontal"",
-                    ""id"": ""129d68f5-cdf1-4a97-be27-29fa9fb1a259"",
-                    ""path"": ""1DAxis"",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""4c7386cc-d212-4b0a-9580-bedae1de76f0"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -59,9 +75,9 @@ public class @Input : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""5580349f-5125-41bb-8b7f-fa8b974b1c4b"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""name"": ""up"",
+                    ""id"": ""d4f12b61-c1dd-4934-84cd-4eec1b1df8d2"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -70,30 +86,8 @@ public class @Input : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""d1e98e5f-aaac-4a1b-93a0-705a8ebcad6d"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Vertical"",
-                    ""id"": ""2bf7a4ba-903d-424e-8497-66c71fa680cb"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""36c331c7-edab-49ab-a1ee-0aeee3fd4e31"",
+                    ""name"": ""down"",
+                    ""id"": ""83909533-1ea3-4186-a1cd-44831f56db92"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -103,15 +97,48 @@ public class @Input : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""f37830ab-52e7-43e0-972f-f58174760970"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""name"": ""left"",
+                    ""id"": ""b86fe926-83ff-46e0-a3c7-0b936864a906"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""80f9f5c5-b907-4ec9-9c47-d9a93acae390"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1412c00c-8d59-4d15-8cb2-6dc2e6d71a6f"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c26e516-f3d4-480e-a048-f6d60f3659aa"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SpawnNewBall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +149,8 @@ public class @Input : IInputActionCollection, IDisposable
         m_Controller = asset.FindActionMap("Controller", throwIfNotFound: true);
         m_Controller_Move = m_Controller.FindAction("Move", throwIfNotFound: true);
         m_Controller_UpwardImpulse = m_Controller.FindAction("Upward Impulse", throwIfNotFound: true);
+        m_Controller_Sprint = m_Controller.FindAction("Sprint", throwIfNotFound: true);
+        m_Controller_SpawnNewBall = m_Controller.FindAction("SpawnNewBall", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -173,12 +202,16 @@ public class @Input : IInputActionCollection, IDisposable
     private IControllerActions m_ControllerActionsCallbackInterface;
     private readonly InputAction m_Controller_Move;
     private readonly InputAction m_Controller_UpwardImpulse;
+    private readonly InputAction m_Controller_Sprint;
+    private readonly InputAction m_Controller_SpawnNewBall;
     public struct ControllerActions
     {
         private @Input m_Wrapper;
         public ControllerActions(@Input wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Controller_Move;
         public InputAction @UpwardImpulse => m_Wrapper.m_Controller_UpwardImpulse;
+        public InputAction @Sprint => m_Wrapper.m_Controller_Sprint;
+        public InputAction @SpawnNewBall => m_Wrapper.m_Controller_SpawnNewBall;
         public InputActionMap Get() { return m_Wrapper.m_Controller; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -194,6 +227,12 @@ public class @Input : IInputActionCollection, IDisposable
                 @UpwardImpulse.started -= m_Wrapper.m_ControllerActionsCallbackInterface.OnUpwardImpulse;
                 @UpwardImpulse.performed -= m_Wrapper.m_ControllerActionsCallbackInterface.OnUpwardImpulse;
                 @UpwardImpulse.canceled -= m_Wrapper.m_ControllerActionsCallbackInterface.OnUpwardImpulse;
+                @Sprint.started -= m_Wrapper.m_ControllerActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_ControllerActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_ControllerActionsCallbackInterface.OnSprint;
+                @SpawnNewBall.started -= m_Wrapper.m_ControllerActionsCallbackInterface.OnSpawnNewBall;
+                @SpawnNewBall.performed -= m_Wrapper.m_ControllerActionsCallbackInterface.OnSpawnNewBall;
+                @SpawnNewBall.canceled -= m_Wrapper.m_ControllerActionsCallbackInterface.OnSpawnNewBall;
             }
             m_Wrapper.m_ControllerActionsCallbackInterface = instance;
             if (instance != null)
@@ -204,6 +243,12 @@ public class @Input : IInputActionCollection, IDisposable
                 @UpwardImpulse.started += instance.OnUpwardImpulse;
                 @UpwardImpulse.performed += instance.OnUpwardImpulse;
                 @UpwardImpulse.canceled += instance.OnUpwardImpulse;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
+                @SpawnNewBall.started += instance.OnSpawnNewBall;
+                @SpawnNewBall.performed += instance.OnSpawnNewBall;
+                @SpawnNewBall.canceled += instance.OnSpawnNewBall;
             }
         }
     }
@@ -212,5 +257,7 @@ public class @Input : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnUpwardImpulse(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
+        void OnSpawnNewBall(InputAction.CallbackContext context);
     }
 }
