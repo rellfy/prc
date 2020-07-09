@@ -1,19 +1,17 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
-using Unity.Jobs;
 using Unity.Physics;
 using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.UIElements;
 using Material = UnityEngine.Material;
 using SphereCollider = Unity.Physics.SphereCollider;
 using BoxCollider = Unity.Physics.BoxCollider;
 using Collider = Unity.Physics.Collider;
 
 [AlwaysSynchronizeSystem]
-public class Start : SystemBase {
+public class RectilinearPlane : SystemBase {
 
     protected override void OnCreate() {
         CreateRectilinearPlane(100, 100, 0.1f);
@@ -33,8 +31,16 @@ public class Start : SystemBase {
     }
 
     private async void CreateRectilinearPlane(int x, int y, float barWidth) {
-        Material blackMaterial = await Addressables.LoadAssetAsync<Material>("Assets/Materials/Black.mat").Task;
-        Mesh barMesh = Copy((await Addressables.LoadAssetAsync<GameObject>("Assets/Prefabs/Cube.prefab").Task).GetComponent<MeshFilter>().sharedMesh);
+        Material blackMaterial = await Addressables.LoadAssetAsync<Material>(
+            PRC.Addressables.Materials.Black
+        ).Task;
+
+        Mesh barMesh = Copy(
+            (await Addressables.LoadAssetAsync<GameObject>(PRC.Addressables.Prefabs.Cube).Task)
+            .GetComponent<MeshFilter>()
+            .sharedMesh
+        );
+
         const float barDistance = 0.000f;
 
         DOTools.Meshing.ScaleMesh(ref barMesh, new float3(barWidth, 1, barWidth));
@@ -47,7 +53,7 @@ public class Start : SystemBase {
             ComponentType.ReadWrite<LocalToWorld>(),
             ComponentType.ReadWrite<Translation>(),
             ComponentType.ReadWrite<Rotation>(),
-            ComponentType.ReadWrite<NonUniformScale>(),
+            ComponentType.ReadWrite<Scale>(),
             // Rendering.
             ComponentType.ReadWrite<RenderMesh>(),
             ComponentType.ReadWrite<RenderBounds>(),
@@ -55,9 +61,6 @@ public class Start : SystemBase {
             ComponentType.ReadWrite<ChunkWorldRenderBounds>(),
             // Physics.
             ComponentType.ReadWrite<PhysicsCollider>()
-            //ComponentType.ReadWrite<PhysicsVelocity>(),
-            //ComponentType.ReadWrite<PhysicsMass>(),
-            //ComponentType.ReadWrite<PhysicsDamping>()
         );
 
         for (int i = 0; i < x; i++) {
@@ -75,8 +78,8 @@ public class Start : SystemBase {
                     Value = position
                 });
 
-                EntityManager.SetComponentData(bar, new NonUniformScale() {
-                    Value = new float3(1f, 1f, 1f)
+                EntityManager.SetComponentData(bar, new Scale() {
+                    Value = 1f
                 });
 
                 PhysicsCollider collider = new PhysicsCollider() {

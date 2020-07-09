@@ -16,14 +16,15 @@ public class BallSpawner : SystemBase {
     }
 
     public static async void SpawnBall(float3 position, float radius) {
-        Material whiteMaterial = await Addressables.LoadAssetAsync<Material>("Assets/Materials/White.mat").Task;
+        Material whiteMaterial = await Addressables.LoadAssetAsync<Material>(
+            PRC.Addressables.Materials.White
+        ).Task;
 
         BlobAssetReference<Collider> collider = SphereCollider.Create(new SphereGeometry() {
             Radius = radius
         });
 
-        DOTools.Physics.CreateDynamicBody
-        (
+        DOTools.Physics.CreateDynamicBody(
             position,
             quaternion.identity,
             collider,
