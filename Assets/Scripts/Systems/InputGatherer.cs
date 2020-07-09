@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 [AlwaysUpdateSystem]
 [UpdateBefore(typeof(RectilinearMover))]
-public class CursorInputGatherer : SystemBase, Input.IControllerActions {
+public class InputGatherer : SystemBase, Input.IControllerActions {
 
     private bool jumped;
     private bool spawnedBall;
