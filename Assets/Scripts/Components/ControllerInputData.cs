@@ -1,7 +1,7 @@
 ﻿using Unity.Entities;
 using Unity.Mathematics;
 
-public struct ControllerInput : IComponentData {
+public struct ControllerInputData : IComponentData {
 
     public float2 cursorPosition;
     public bool jump;

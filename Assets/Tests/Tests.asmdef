@@ -5,7 +5,9 @@
         "UnityEditor.TestRunner",
         "PRC",
         "Unity.Entities",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Unity.ResourceManager",
+        "Unity.Addressables"
     ],
     "includePlatforms": [
         "Editor"

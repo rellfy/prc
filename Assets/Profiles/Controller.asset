@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e53108f3ecd5f4eba32c650ff4d8b4, type: 3}
   m_Name: Controller
   m_EditorClassIdentifier: 
-  maximumHeight: 0
-  maximumRadius: 0
-  defaultSpeed: 0
-  sprintSpeed: 0
+  characteristics:
+    minimumHeight: 0
+    maximumHeight: 1.25
+    maximumRadius: 0.5
+    defaultSpeed: 0.75
+    sprintSpeed: 2

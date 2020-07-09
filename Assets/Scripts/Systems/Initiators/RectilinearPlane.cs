@@ -60,8 +60,13 @@ public class RectilinearPlane : SystemBase {
             // Physics.
             ComponentType.ReadWrite<PhysicsCollider>(),
             // Controller data.
-            ComponentType.ReadWrite<ControllerInput>()
+            ComponentType.ReadWrite<ControllerInputData>(),
+            ComponentType.ReadWrite<ControllerCharacteristics>()
         );
+
+        ControllerProfile profile = await Addressables.LoadAssetAsync<ControllerProfile>(
+            PRC.Addressables.Profiles.Controller
+        ).Task;
 
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
@@ -73,6 +78,8 @@ public class RectilinearPlane : SystemBase {
                     mesh = barMesh,
                     material = blackMaterial
                 });
+
+                EntityManager.SetSharedComponentData(bar, profile.characteristics);
 
                 EntityManager.SetComponentData(bar, new Translation() {
                     Value = position

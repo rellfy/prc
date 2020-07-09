@@ -14,27 +14,24 @@ public class RectilinearElevator : SystemBase {
             .ForEach(
         (
             ref Translation translation,
-            in ControllerInput input
+            in ControllerCharacteristics characteristics,
+            in ControllerInputData input
         ) => {
             float distance = GetControllerDistanceToCursor(
                 translation.Value,
                 input.cursorPosition
             );
 
-            float maxDistance = 0.2f;
-            float maxheight = 1f;
-
-            if (distance > maxDistance) {
+            if (distance > characteristics.maximumRadius) {
                 ConstrainController(ref translation);
                 return;
             }
 
             ElevateController(
                 ref translation,
+                in characteristics,
                 in input,
-                distance,
-                maxDistance,
-                maxheight
+                distance
             );
         }).Run();
     }
@@ -53,13 +50,16 @@ public class RectilinearElevator : SystemBase {
 
     public static void ElevateController(
         ref Translation translation,
-        in ControllerInput input,
-        float distance,
-        float maxDistance,
-        float maxHeight,
-        float minHeight = 0f
+        in ControllerCharacteristics characteristics,
+        in ControllerInputData input,
+        float distance
     ) {
-        float height = math.lerp(maxHeight, minHeight, distance / maxDistance);
+        float height = math.lerp(
+            characteristics.maximumRadius,
+            characteristics.minimumHeight,
+            distance / characteristics.maximumRadius
+        );
+
         translation.Value += new float3(0, -translation.Value.y + height, 0);
     }
 

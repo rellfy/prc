@@ -15,19 +15,30 @@ public class ControllerInputProcessor : SystemBase {
         float dt = Time.DeltaTime;
 
         Entities
+            .WithoutBurst()
             .ForEach(
         (
-            ref ControllerInput controller
+            ref ControllerInputData controller,
+            in ControllerCharacteristics characteristics
         ) => {
-            ApplyInput(ref controller, input, dt);
+            ApplyInput(ref controller, in characteristics, in input, dt);
         })
-            .Schedule();
+            .Run();
     }
 
-    public static void ApplyInput(ref ControllerInput controller, in InputData input, float dt) {
+    public static void ApplyInput(
+        ref ControllerInputData controller,
+        in ControllerCharacteristics characteristics,
+        in InputData input,
+        float dt
+    ) {
         controller.jump = input.jumped;
         controller.sprint = input.sprinted;
-        controller.cursorPosition += input.cursorMovement * dt * (controller.sprint ? 6f : 2f);
+        controller.cursorPosition += input.cursorMovement
+                                     * dt
+                                     * (controller.sprint ? 
+                                         characteristics.sprintSpeed : 
+                                         characteristics.defaultSpeed);
     }
 
 }
