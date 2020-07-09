@@ -6,8 +6,11 @@ using Unity.Physics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Gathers player input as a singleton.
+/// </summary>
 [AlwaysUpdateSystem]
-[UpdateBefore(typeof(RectilinearMover))]
+[UpdateBefore(typeof(RectilinearElevator))]
 public class InputGatherer : SystemBase, Input.IControllerActions {
 
     private bool jumped;
@@ -26,20 +29,11 @@ public class InputGatherer : SystemBase, Input.IControllerActions {
     }
 
     protected override void OnUpdate() {
-        Entity singleton;
+        if (this.cursorQuery.CalculateEntityCount() == 0)
+            EntityManager.CreateEntity(ComponentType.ReadWrite<InputData>());
 
-        try {
-            singleton = this.cursorQuery.GetSingletonEntity();
-        } catch (Exception e) {
-            singleton = EntityManager.CreateEntity(ComponentType.ReadWrite<InputData>());
-        }
-        
-        InputData data = GetComponent<InputData>(singleton);
-
-        float speed = this.sprinting ? 6f : 2f;
-
-        this.cursorQuery.SetSingleton(new InputData() {
-            cursorPosition = data.cursorPosition + this.movement * Time.DeltaTime * speed,
+        SetSingleton(new InputData() {
+            cursorMovement = this.movement,
             jumped = this.jumped,
             sprinted = this.sprinting,
             spawnedBall = this.spawnedBall

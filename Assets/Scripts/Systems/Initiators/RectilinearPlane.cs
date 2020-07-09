@@ -6,9 +6,7 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Material = UnityEngine.Material;
-using SphereCollider = Unity.Physics.SphereCollider;
 using BoxCollider = Unity.Physics.BoxCollider;
-using Collider = Unity.Physics.Collider;
 
 [AlwaysSynchronizeSystem]
 public class RectilinearPlane : SystemBase {
@@ -41,7 +39,7 @@ public class RectilinearPlane : SystemBase {
             .sharedMesh
         );
 
-        const float barDistance = 0.000f;
+        const float barDistance = 0.005f;
 
         DOTools.Meshing.ScaleMesh(ref barMesh, new float3(barWidth, 1, barWidth));
         barMesh.RecalculateNormals();
@@ -60,7 +58,9 @@ public class RectilinearPlane : SystemBase {
             ComponentType.ReadWrite<WorldRenderBounds>(),
             ComponentType.ReadWrite<ChunkWorldRenderBounds>(),
             // Physics.
-            ComponentType.ReadWrite<PhysicsCollider>()
+            ComponentType.ReadWrite<PhysicsCollider>(),
+            // Controller data.
+            ComponentType.ReadWrite<ControllerInput>()
         );
 
         for (int i = 0; i < x; i++) {
